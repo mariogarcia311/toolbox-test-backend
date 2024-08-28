@@ -1,11 +1,10 @@
-import { validateDataFile } from '../adapters/filesAdapter.js';
-import filesApiClient from '../config/axiosConfig.js';
+const { validateDataFile } = require('../adapters/filesAdapter.js');
+const filesApiClient = require('../config/axiosConfig.js');
 
 class FilesService {
-  constructor() {
-    this.apiClient = filesApiClient();
+  constructor(apiClient = filesApiClient()) {
+    this.apiClient = apiClient;
   }
-
   async getFiles() {
     let files;
     try {
@@ -21,7 +20,6 @@ class FilesService {
                 return validateDataFile(_fileData);
               })
               .filter((_fileData) => _fileData != null);
-
             return {
               file: _file,
               lines: adaptedFileData,
@@ -35,11 +33,23 @@ class FilesService {
           }
         })
       );
-
       return contentFiles;
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      throw new Error(`Internal sever error ${error}`);
+    }
+  }
+
+  async getFilesList() {
+    let files;
+    try {
+      const { data } = await this.apiClient.get('/v1/secret/files');
+      files = data.files;
+      return files;
+    } catch (error) {
+      console.error(error.message);
+      throw new Error(`Internal sever error ${error}`);
     }
   }
 }
-export default FilesService;
+module.exports = FilesService;

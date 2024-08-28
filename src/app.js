@@ -1,7 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import { environment } from './config/environment.js';
-import filesRoutes from './routes/filesRouter.js';
+const express = require('express');
+const cors = require('cors');
+const { environment } = require('./config/environment.js');
+const filesRoutes = require('./routes/filesRouter.js');
 
 const app = express();
 const PORT = environment.port || 3000;

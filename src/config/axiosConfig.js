@@ -1,14 +1,11 @@
-import axios from 'axios';
-import { environment } from './environment.js';
-
+const axios = require('axios');
+const { environment } = require('./environment.js');
 const { externalApi } = environment;
-
 const filesApiClient = () => {
   const apiClient = axios.create({
     baseURL: externalApi.url,
     timeout: 5000,
   });
-
   apiClient.interceptors.request.use(
     (config) => {
       const token = externalApi.token;
@@ -21,8 +18,7 @@ const filesApiClient = () => {
       return Promise.reject(error);
     }
   );
-
   return apiClient;
 };
 
-export default filesApiClient;
+module.exports = filesApiClient;

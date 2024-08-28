@@ -1,8 +1,7 @@
-import FilesService from '../services/filesService.js';
-
+const FilesService = require('../services/filesService.js');
 const filesService = new FilesService();
 
-export const getFiles = async (req, res) => {
+const getFiles = async (req, res) => {
   try {
     const files = await filesService.getFiles();
     res.json(files);
@@ -14,11 +13,11 @@ export const getFiles = async (req, res) => {
   }
 };
 
-export const setFiles = async (req, res) => {
+const getFilesList = async (req, res) => {
+  const files = await filesService.getFilesList();
   try {
     res.json({
-      msg: 'files',
-      files: [],
+      files,
     });
   } catch (error) {
     res.status(error.code ?? 500).json({
@@ -26,4 +25,9 @@ export const setFiles = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+module.exports = {
+  getFiles,
+  getFilesList,
 };
